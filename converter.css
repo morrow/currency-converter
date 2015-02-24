@@ -123,10 +123,14 @@ input[type=number] {
   left:0;
   right:0;
   bottom:0;
-  background: white;
+  background: transparent !important; /* do not change */
   position:absolute;
   font-size:14px;
   opacity: 0;
+}
+
+.select select option {
+  background: white !important;
 }
 
 #remote-country {
