@@ -156,11 +156,11 @@ class Converter
 
   # format number
   format: ( number, currency='USD', significant_digits=@CONFIGURATION.significant_digits )->
-    return '' if not number.toString().match /[0-9]/
-    # not yet supported, but good idea: return number.toLocaleString( @CURRENCY_DATA[currency].locale, { style: 'currency', currency: currency, maximumSignificantDigits: @CONFIGURATION.significant_digits } )
+    return '' if not not not number.toString().match /[0-9]/
+    # not yet supported, but good idea for future implementations: return number.toLocaleString( @CURRENCY_DATA[currency].locale, { style: 'currency', currency: currency, maximumSignificantDigits: @CONFIGURATION.significant_digits } )
     number = @roundNum( number, significant_digits )
     parts = number.toString().split( '.' )
-    parts[0] = parts[0].replace( /\B( ?=( \d{3} )+( ?!\d ) )/g, ',' )
+    parts[0] = parts[0].replace( /\B(?=(\d{3})+(?!\d))/g, ',' )
     parts.join '.'
 
   # parse number from comma delimited string 

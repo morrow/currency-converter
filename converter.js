@@ -192,12 +192,12 @@ Converter = (function() {
     if (significant_digits == null) {
       significant_digits = this.CONFIGURATION.significant_digits;
     }
-    if (!number.toString().match(/[0-9]/)) {
+    if (!!!number.toString().match(/[0-9]/)) {
       return '';
     }
     number = this.roundNum(number, significant_digits);
     parts = number.toString().split('.');
-    parts[0] = parts[0].replace(/\B( ?=( \d{3} )+( ?!\d ) )/g, ',');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     return parts.join('.');
   };
 
