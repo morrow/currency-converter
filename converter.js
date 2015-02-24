@@ -5,6 +5,7 @@ Converter = (function() {
   Converter.prototype.CONFIGURATION = {
     conversion_keypress_delay: 500,
     significant_digits: 2,
+    continually_update_rates: false,
     currencies_enabled_remote: ['USD', 'ETB', 'EGP', 'SDG', 'KES'],
     currencies_enabled_local: ['AUD']
   };
@@ -56,11 +57,11 @@ Converter = (function() {
         return _this.convert();
       };
     })(this));
-    this.createInputs();
+    this.populateSelectOptions();
     this.listen();
   }
 
-  Converter.prototype.createInputs = function() {
+  Converter.prototype.populateSelectOptions = function() {
     var currency, currency_data, _i, _len, _ref;
     if ($('#remote-country select').text() === '') {
       _ref = this.CONFIGURATION.currencies_enabled_remote;
@@ -77,12 +78,6 @@ Converter = (function() {
       $('#send-receive-currency select').append("<option value='" + this.remote_currency + "'>" + this.remote_currency + "</option>");
     }
     return $('#send-receive-currency select').change();
-  };
-
-  Converter.prototype.log = function(input, style) {
-    if (window.enable_log) {
-      return console.log("%c " + input, style);
-    }
   };
 
   Converter.prototype.getCommission = function(amount) {
@@ -139,14 +134,14 @@ Converter = (function() {
     switch (select_id) {
       case 'send-receive-toggle':
         span_text = value[0].toUpperCase() + value.slice(1);
-        this.createInputs();
+        this.populateSelectOptions();
         break;
       case 'remote-country':
         $('#remote-country-flag').attr('src', "./flags/png/" + value + ".png");
         span_text = this.CURRENCY_DATA[value]['country'];
         $('#send-receive-currency select').val(value);
         this.selectHandler('send-receive-currency', value);
-        this.createInputs();
+        this.populateSelectOptions();
         break;
       case 'send-receive-currency':
         if (value === 'AUD') {
@@ -176,9 +171,17 @@ Converter = (function() {
           delay = _this.CONFIGURATION.conversion_keypress_delay;
         }
         window.clearTimeout(window.keyboard_timeout);
-        return window.keyboard_timeout = window.setTimeout((function() {
-          return _this.convert();
-        }), delay);
+        if (_this.CONFIGURATION.continually_update_rates) {
+          return window.keyboard_timeout = window.setTimeout((function() {
+            return _this.updateExchangeRates(function() {
+              return _this.convert();
+            });
+          }), delay);
+        } else {
+          return window.keyboard_timeout = window.setTimeout((function() {
+            return _this.convert();
+          }), delay);
+        }
       };
     })(this));
     return $('.select select').change();
@@ -226,9 +229,6 @@ Converter = (function() {
       this.rates = {};
     }
     this.rates[this.local_currency] = 1;
-    if (this.manual_input !== void 0) {
-      return false;
-    }
     currencies_to_convert = [];
     _ref = this.CONFIGURATION.currencies_enabled_remote;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -238,13 +238,26 @@ Converter = (function() {
     url = 'https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.xchange where pair in ( "' + currencies_to_convert.join('", "') + '" )&env=store://datatables.org/alltableswithkeys&format=json';
     return $.get(url, (function(_this) {
       return function(r) {
-        var rate, _j, _len1, _ref1;
+        var d, date, rate, time, _j, _len1, _ref1;
+        time = '';
+        date = '';
         _ref1 = r.query.results.rate;
         for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
           rate = _ref1[_j];
           _this.rates[rate.id.replace(_this.local_currency, '')] = rate.Rate;
-          $('#rates-updated-at').html("" + rate.Date + " " + rate.Time + " from <a target='_blank' href='" + url + "'>yahoo finance data</a>");
+          date = rate.Date;
+          time = parseInt(rate.Time);
+          time -= (new Date().getTimezoneOffset() - 5 * 60) / 60;
+          if (rate.Time.match(/pm/i)) {
+            time += 12;
+          }
+          time = "" + time + ":" + (parseInt(rate.Time.split(':')[1]));
         }
+        d = new Date("" + date + " " + time).toLocaleString(navigator.language, {
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        $('#rates-updated-at').html("" + d + " from <a target='_blank' href='" + url + "'>yahoo finance</a>");
         if (callback) {
           return callback();
         }

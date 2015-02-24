@@ -5,6 +5,8 @@ class Converter
     conversion_keypress_delay: 500
     # number of decimal places to calculate conversions to
     significant_digits: 2
+    # update exchange rates for each transaction - rate limit for YQL is 2,000 calls per hour
+    continually_update_rates: false
     # currencies available to send remotely, first is default
     currencies_enabled_remote: ['USD', 'ETB', 'EGP', 'SDG', 'KES']
     # currencies available to pay locally, first is default
@@ -51,18 +53,18 @@ class Converter
     # update exchange rates from external source
     @updateExchangeRates( => @convert() )
     # create dropdowns
-    @createInputs()
+    @populateSelectOptions()
     # listen for input changes
     @listen()
 
-  # create inputs
-  createInputs: ->
+  # populate select options
+  populateSelectOptions: ->
     # populate country options once only
     if $('#remote-country select').text() == ''
       for currency in @CONFIGURATION.currencies_enabled_remote
         currency_data = @CURRENCY_DATA[currency]
         $('#remote-country select').append( "<option value='#{currency}'>#{currency_data.country}</option>" )
-    # populate currency select each time function is called
+    # populate currency select
     $('#send-receive-currency select').html('')
     if $('#send-receive-toggle select').val() == 'send'
       $('#send-receive-currency select').append( "<option value='#{@local_currency}'>#{@local_currency}</option>" )
@@ -72,10 +74,6 @@ class Converter
       #$('#send-receive-currency select').append( "<option value='#{@local_currency}'>#{@local_currency}</option>" )
     # trigger on change event for currency select
     $('#send-receive-currency select').change()
-
-  # log
-  log: (input, style)->
-    console.log("%c #{input}", style) if window.enable_log
 
   # return comission rate for given value
   getCommission: ( amount )->
@@ -122,13 +120,13 @@ class Converter
     switch select_id
       when 'send-receive-toggle'
         span_text = value[0].toUpperCase() + value.slice(1)
-        @createInputs()
+        @populateSelectOptions()
       when 'remote-country'
         $('#remote-country-flag').attr('src', "./flags/png/#{value}.png")
         span_text = @CURRENCY_DATA[value]['country']
         $('#send-receive-currency select').val(value)
         @selectHandler('send-receive-currency', value)
-        @createInputs()
+        @populateSelectOptions()
       when 'send-receive-currency'
         if value == 'AUD'
           @remote_currency = $('#remote-country select').val()
@@ -151,7 +149,10 @@ class Converter
       else
         delay = @CONFIGURATION.conversion_keypress_delay
       window.clearTimeout(window.keyboard_timeout)
-      window.keyboard_timeout = window.setTimeout((=> @convert()), delay)
+      if @CONFIGURATION.continually_update_rates
+        window.keyboard_timeout = window.setTimeout((=> @updateExchangeRates( => @convert() ) ), delay)
+      else
+        window.keyboard_timeout = window.setTimeout((=> @convert() ), delay)
     $('.select select').change()
 
   # format number
@@ -178,9 +179,8 @@ class Converter
   updateExchangeRates: (callback)->
     # initialize rates object 
     @rates = {} if not @rates
+    # give 1 to 1 rate for local -> local currency
     @rates[@local_currency] = 1
-    # if manual input has been specified dont update
-    return false if @manual_input != undefined
     currencies_to_convert = []
     for currency in @CONFIGURATION.currencies_enabled_remote
       currencies_to_convert.push currency + @local_currency
@@ -188,9 +188,18 @@ class Converter
     url = 'https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.xchange where pair in ( "' + currencies_to_convert.join( '", "' ) + '" )&env=store://datatables.org/alltableswithkeys&format=json'
     # attempt to load exchange rates from external data
     $.get url, ( r )=>
+        time = ''
+        date = ''
         # update rates object 
         for rate in r.query.results.rate
           @rates[rate.id.replace( @local_currency, '' )] = rate.Rate
-          $( '#rates-updated-at' ).html "#{rate.Date} #{rate.Time} from <a target='_blank' href='#{url}'>yahoo finance data</a>"
+          date = rate.Date
+          time = parseInt(rate.Time)
+          time -= (new Date().getTimezoneOffset() - 5 * 60) / 60 # time zone offset
+          time += 12 if rate.Time.match(/pm/i)
+          time = "#{time}:#{parseInt(rate.Time.split(':')[1])}"
+        d = new Date("#{date} #{time}").toLocaleString(navigator.language, {hour: '2-digit', minute:'2-digit'})
+        $( '#rates-updated-at' ).html "#{d} from <a target='_blank' href='#{url}'>yahoo finance</a>"
+        # perform callback if necessary
         callback() if callback
 
