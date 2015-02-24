@@ -54,15 +54,6 @@ option, input {
    color: white;  
 }
 
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type=number] {
-    -moz-appearance:textfield;
-}
-
 #converter {
   padding:1em;
   width:380px;

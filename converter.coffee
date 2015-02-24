@@ -167,7 +167,7 @@ class Converter
   # parse number from comma delimited string 
   parseNum: ( input )->
     return '' if not input.toString().replace( /,|\./g, '' ).match( /[0-9]/ )
-    return parseFloat( parseFloat( input.toString().replace( /\,/g, '' ) ).toFixed( @CONFIGURATION.significant_digits ) )
+    return parseFloat( parseFloat( input.toString().replace( /,/g, '' ) ).toFixed( @CONFIGURATION.significant_digits ) )
 
   # round number according to significant_digits
   roundNum:( number, significant_digits=@CONFIGURATION.significant_digits )->

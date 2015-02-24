@@ -208,7 +208,7 @@ Converter = (function() {
     if (!input.toString().replace(/,|\./g, '').match(/[0-9]/)) {
       return '';
     }
-    return parseFloat(parseFloat(input.toString().replace(/\,/g, '')).toFixed(this.CONFIGURATION.significant_digits));
+    return parseFloat(parseFloat(input.toString().replace(/,/g, '')).toFixed(this.CONFIGURATION.significant_digits));
   };
 
   Converter.prototype.roundNum = function(number, significant_digits) {
