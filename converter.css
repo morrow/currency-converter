@@ -123,7 +123,7 @@ input[type=number] {
   left:0;
   right:0;
   bottom:0;
-  background: transparent;
+  background: white;
   position:absolute;
   font-size:14px;
   opacity: 0;
@@ -157,7 +157,9 @@ input[type=number] {
 }
 
 #result .local-currency-flag, #result .remote-currency-flag {
-  width:30px;
+  position: relative;
+  top:4px;
+  width:25px;
 }
 
 #result hr {

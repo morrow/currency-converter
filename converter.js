@@ -51,7 +51,11 @@ Converter = (function() {
   function Converter() {
     this.remote_currency = this.CONFIGURATION.currencies_enabled_remote[0];
     this.local_currency = this.CONFIGURATION.currencies_enabled_local[0];
-    this.updateExchangeRates();
+    this.updateExchangeRates((function(_this) {
+      return function() {
+        return _this.convert();
+      };
+    })(this));
     this.createInputs();
     this.listen();
   }
@@ -234,20 +238,16 @@ Converter = (function() {
     url = 'https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.xchange where pair in ( "' + currencies_to_convert.join('", "') + '" )&env=store://datatables.org/alltableswithkeys&format=json';
     return $.get(url, (function(_this) {
       return function(r) {
-        var rate, _j, _len1, _ref1, _results;
+        var rate, _j, _len1, _ref1;
         _ref1 = r.query.results.rate;
-        _results = [];
         for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
           rate = _ref1[_j];
           _this.rates[rate.id.replace(_this.local_currency, '')] = rate.Rate;
           $('#rates-updated-at').html("" + rate.Date + " " + rate.Time + " from <a target='_blank' href='" + url + "'>yahoo finance data</a>");
-          if (callback) {
-            _results.push(callback());
-          } else {
-            _results.push(void 0);
-          }
         }
-        return _results;
+        if (callback) {
+          return callback();
+        }
       };
     })(this));
   };

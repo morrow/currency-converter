@@ -49,7 +49,7 @@ class Converter
     # get default local currency
     @local_currency = @CONFIGURATION.currencies_enabled_local[0]
     # update exchange rates from external source
-    @updateExchangeRates()
+    @updateExchangeRates( => @convert() )
     # create dropdowns
     @createInputs()
     # listen for input changes
@@ -192,5 +192,5 @@ class Converter
         for rate in r.query.results.rate
           @rates[rate.id.replace( @local_currency, '' )] = rate.Rate
           $( '#rates-updated-at' ).html "#{rate.Date} #{rate.Time} from <a target='_blank' href='#{url}'>yahoo finance data</a>"
-          callback() if callback
+        callback() if callback
 
