@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'droid serif';
+    src: url('DroidSerif-Bold-webfont.svg#droid_serifbold') format('svg'),
+         url('DroidSerif-Bold-webfont.eot'),
+         url('DroidSerif-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('DroidSerif-Bold-webfont.woff') format('woff'),
+         url('DroidSerif-Bold-webfont.ttf') format('truetype'); 
+    font-weight: bold; 
+    font-style: normal;
+
+}
+
