@@ -254,6 +254,9 @@ Converter = (function() {
           time = "" + time + ":" + (parseInt(rate.Time.split(':')[1]));
         }
         d = new Date("" + date + " " + time).toLocaleString(navigator.language, {
+          month: '2-digit',
+          year: '2-digit',
+          day: '2-digit',
           hour: '2-digit',
           minute: '2-digit'
         });

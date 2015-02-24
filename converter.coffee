@@ -198,7 +198,7 @@ class Converter
           time -= (new Date().getTimezoneOffset() - 5 * 60) / 60 # time zone offset
           time += 12 if rate.Time.match(/pm/i)
           time = "#{time}:#{parseInt(rate.Time.split(':')[1])}"
-        d = new Date("#{date} #{time}").toLocaleString(navigator.language, {hour: '2-digit', minute:'2-digit'})
+        d = new Date("#{date} #{time}").toLocaleString(navigator.language, {month:'2-digit', year: '2-digit', day: '2-digit', hour: '2-digit', minute:'2-digit'})
         $( '#rates-updated-at' ).html "#{d} from <a target='_blank' href='#{url}'>yahoo finance</a>"
         # perform callback if necessary
         callback() if callback
