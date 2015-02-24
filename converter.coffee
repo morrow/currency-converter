@@ -104,8 +104,10 @@ class Converter
     $('#recipient-receives').text( @format( remote_value ), @remote_currency )
     # currency info
     $('.local-currency').text( @local_currency )
+    $('.local-currency-flag').attr 'src', "./flags/png/#{@local_currency}.png"
     $('.local-currency-symbol').text( @CURRENCY_DATA[@local_currency].symbol )
     $('.remote-currency').text( @remote_currency )
+    $('.remote-currency-flag').attr 'src', "./flags/png/#{@remote_currency}.png"
     $('.remote-currency-symbol').text @CURRENCY_DATA[@remote_currency].symbol
     $('.conversion-rate').text( @format( 1 / @rates[@remote_currency], @remote_currency, 4) )
     if local_value.toString() == ''

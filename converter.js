@@ -115,8 +115,10 @@ Converter = (function() {
     $('#total-due').text(this.format(local_value + commission, this.local_currency));
     $('#recipient-receives').text(this.format(remote_value), this.remote_currency);
     $('.local-currency').text(this.local_currency);
+    $('.local-currency-flag').attr('src', "./flags/png/" + this.local_currency + ".png");
     $('.local-currency-symbol').text(this.CURRENCY_DATA[this.local_currency].symbol);
     $('.remote-currency').text(this.remote_currency);
+    $('.remote-currency-flag').attr('src', "./flags/png/" + this.remote_currency + ".png");
     $('.remote-currency-symbol').text(this.CURRENCY_DATA[this.remote_currency].symbol);
     $('.conversion-rate').text(this.format(1 / this.rates[this.remote_currency], this.remote_currency, 4));
     if (local_value.toString() === '') {

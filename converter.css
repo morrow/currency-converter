@@ -25,6 +25,7 @@ h1 {
 
 h2 {
   margin: 0;
+  margin-bottom: 1em;
   font-size:20px;
   font-weight: bold;
 }
@@ -139,6 +140,10 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   min-width:50px;
 }
 
+#send-receive-amount {
+  max-width:145px;
+}
+
 #result {
   border-radius:5px;
   max-height:0;
@@ -147,11 +152,20 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   padding: 0;
 }
 
+#result .local-currency-flag, #result .remote-currency-flag {
+  width:30px;
+}
+
+#result hr {
+  border:1px solid #ddd;
+}
+
 #result.expanded {
   color:#333;
   background:white;
   max-height:1000px;
   display: block;
+  font-size: 15px;
 }
 
 .amount {

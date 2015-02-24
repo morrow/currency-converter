@@ -24,7 +24,7 @@
         <select></select>
         <span>&nbsp;</span>
       </div>
-      <input id='send-receive-amount' class='input' type='search' placeholder='Amount' pattern='\d*' />
+      <input id='send-receive-amount' class='input' type='number' placeholder='Amount' pattern='\d*' />
       <div id='result'>
         <dl>
           <dt>Amount to send:</dt>
@@ -45,12 +45,14 @@
             <span class='local-currency-symbol'></span>
             <span id='total-due' class='amount'></span>
             <span class='local-currency'></span>
+            <img class='local-currency-flag' />
           </dd>
           <dt>Recipient receives: </dt>
           <dd>
             <span class='remote-currency-symbol'></span>
             <span id='recipient-receives' class='amount'></span>
             <span class='remote-currency'></span>
+            <img class='remote-currency-flag' />
           </dd>
         </dl>
       </div>
