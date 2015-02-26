@@ -170,7 +170,7 @@ Converter = (function() {
     } else {
       $('.us-rate').hide();
     }
-    $('dd.fees .us-rate').show();
+    $('dd.fees .us-rate, dd.amount-to-send .us-rate').show();
     if ($('#input').val() === '') {
       $('#result').removeClass('expanded');
       return $('#info').hide();

@@ -143,8 +143,8 @@ class Converter
       $('.us-rate').show() 
     else
       $('.us-rate').hide() 
-    # always show US fee rate 
-    $('dd.fees .us-rate').show()
+    # always show US rate for fees and amount to send
+    $('dd.fees .us-rate, dd.amount-to-send .us-rate').show()
     if $('#input').val() == ''
       $('#result').removeClass( 'expanded' )
       $('#info').hide()
