@@ -177,12 +177,8 @@ option, input {
   color:black;
 }
 
-.local-currency-symbol, .remote-currency-symbol, .us-currency-symbol {
+#result .local-currency-symbol, #result .remote-currency-symbol, #result .us-currency-symbol {
   color:#555;
-}
-
-.amount {
-  letter-spacing:1px;
 }
 
 .total .amount, .receives .amount {
@@ -210,7 +206,7 @@ option, input {
   opacity:0.8;
 }
 
-.remote-currency, .local-currency, .us-currency {
+#result .remote-currency, #result .local-currency, #result .us-currency {
   text-align: center;
   width:35px;
   display: inline-block;
