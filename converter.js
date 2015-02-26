@@ -110,6 +110,7 @@ Converter = (function() {
         remote_value = $('#send-receive-amount').val();
         commission = this.getCommission(remote_value);
         remote_value -= commission;
+        commission = commission * this.rates['USD'];
         local_value = remote_value * this.rates['USD'];
       } else {
         $('.us-rate').hide();
@@ -121,8 +122,7 @@ Converter = (function() {
     } else {
       remote_value = this.parseNum($('#send-receive-amount').val());
       local_value = remote_value * rate;
-      commission = this.getCommission(remote_value);
-      local_value -= commission;
+      commission = this.getCommission(local_value);
     }
     $('#amount').text(this.format(local_value, this.local_currency));
     $('#amount').attr('data-currency', this.local_currency);
@@ -131,6 +131,8 @@ Converter = (function() {
     $('#fees').attr('data-currency', this.local_currency);
     $('#fees').attr('data-amount', commission);
     $('#total-due').text(this.format(local_value + commission, this.local_currency));
+    $('#total-due').attr('data-currency', this.local_currency);
+    $('#total-due').attr('data-amount', local_value + commission);
     $('#recipient-receives').text(this.format(remote_value), this.remote_currency);
     $('.local-currency').text(this.local_currency);
     $('.local-currency-flag').attr('src', "./flags/png/" + this.local_currency + ".png");
@@ -174,7 +176,7 @@ Converter = (function() {
         this.include_us_rates = false;
         if (value === 'AUD') {
           this.remote_currency = $('#remote-country select').val();
-        } else if (value === 'USD') {
+        } else if (value === 'USD' && $('#send-receive-toggle select').val() !== 'receive') {
           this.include_us_rates = true;
         } else {
           this.remote_currency = value;

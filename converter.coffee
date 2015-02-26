@@ -93,8 +93,9 @@ class Converter
       if @include_us_rates
         $('.us-rate').show()
         remote_value = $('#send-receive-amount').val()
-        commission = @getCommission( remote_value )
+        commission = @getCommission( remote_value ) 
         remote_value -= commission
+        commission = commission * @rates['USD']
         local_value = remote_value * @rates['USD']
       else
         $('.us-rate').hide()
@@ -105,8 +106,7 @@ class Converter
     else
       remote_value = @parseNum( $('#send-receive-amount').val() )
       local_value = remote_value * rate
-      commission = @getCommission( remote_value )
-      local_value -= commission
+      commission = @getCommission( local_value )
     # results 
     $('#amount').text( @format( local_value, @local_currency ) )
     $('#amount').attr( 'data-currency', @local_currency )
@@ -115,6 +115,8 @@ class Converter
     $('#fees').attr( 'data-currency', @local_currency )
     $('#fees').attr( 'data-amount', commission )
     $('#total-due').text( @format( local_value + commission, @local_currency ) )
+    $('#total-due').attr( 'data-currency', @local_currency )
+    $('#total-due').attr( 'data-amount', local_value + commission )
     $('#recipient-receives').text( @format( remote_value ), @remote_currency )
     # currency info
     $('.local-currency').text( @local_currency )
@@ -152,7 +154,7 @@ class Converter
         @include_us_rates = false
         if value == 'AUD'
           @remote_currency = $('#remote-country select').val()
-        else if value == 'USD'
+        else if value == 'USD' and $('#send-receive-toggle select').val() != 'receive'
           @include_us_rates = true
         else
           @remote_currency = value
