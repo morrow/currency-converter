@@ -151,7 +151,7 @@ option, input {
   padding: 0;
 }
 
-#result .local-currency-flag, #result .remote-currency-flag {
+#result .local-currency-flag, #result .remote-currency-flag, .flag {
   position: relative;
   top:4px;
   width:25px;

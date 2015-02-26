@@ -68,6 +68,7 @@ class Converter
     $('#send-receive-currency select').html('')
     if $('#send-receive-toggle select').val() == 'send'
       $('#send-receive-currency select').append( "<option value='#{@local_currency}'>#{@local_currency}</option>" )
+      $('#send-receive-currency select').append( "<option value='USD'>USD</option>" ) if @local_currency != 'USD'
       #$('#send-receive-currency select').append( "<option value='#{@remote_currency}'>#{@remote_currency}</option>" )
     else
       $('#send-receive-currency select').append( "<option value='#{@remote_currency}'>#{@remote_currency}</option>" )
@@ -89,15 +90,30 @@ class Converter
   convert: ->
     rate = @rates[@remote_currency]
     if $('#send-receive-toggle select').val() == 'send'
-      local_value = @parseNum( $('#send-receive-amount').val() )
-      remote_value = local_value / rate
+      if @include_us_rates
+        $('.us-rate').show()
+        remote_value = $('#send-receive-amount').val()
+        commission = @getCommission( remote_value )
+        remote_value -= commission
+        local_value = remote_value * @rates['USD']
+      else
+        $('.us-rate').hide()
+        local_value = @parseNum( $('#send-receive-amount').val() )
+        commission = @getCommission( local_value )
+        local_value -= commission
+        remote_value = local_value / rate
     else
       remote_value = @parseNum( $('#send-receive-amount').val() )
       local_value = remote_value * rate
-    commission = @getCommission( local_value )
+      commission = @getCommission( remote_value )
+      local_value -= commission
     # results 
     $('#amount').text( @format( local_value, @local_currency ) )
+    $('#amount').attr( 'data-currency', @local_currency )
+    $('#amount').attr( 'data-amount', local_value )
     $('#fees').text( @format( commission, @local_currency ) )
+    $('#fees').attr( 'data-currency', @local_currency )
+    $('#fees').attr( 'data-amount', commission )
     $('#total-due').text( @format( local_value + commission, @local_currency ) )
     $('#recipient-receives').text( @format( remote_value ), @remote_currency )
     # currency info
@@ -108,10 +124,15 @@ class Converter
     $('.remote-currency-flag').attr 'src', "./flags/png/#{@remote_currency}.png"
     $('.remote-currency-symbol').text @CURRENCY_DATA[@remote_currency].symbol
     $('.conversion-rate').text( @format( 1 / @rates[@remote_currency], @remote_currency, 4) )
-    if local_value.toString() == ''
+    # US rates
+    $('.us-rate').each (i, ele) =>
+      amount = @parseNum( $(ele).siblings('.amount').attr('data-amount') )
+      currency = $(ele).siblings('.amount').data('currency')
+      $(ele).find('.amount').text( @format( amount / @rates['USD'] ), 'USD' )
+    if $('#send-receive-amount').val() == ''
       $('#result').removeClass( 'expanded' )
       $('#info').hide()
-    else if remote_value.toString() != ''
+    else 
       $('#result').addClass( 'expanded' )
       $('#info').show()
 
@@ -128,11 +149,15 @@ class Converter
         @selectHandler('send-receive-currency', value)
         @populateSelectOptions()
       when 'send-receive-currency'
+        @include_us_rates = false
         if value == 'AUD'
           @remote_currency = $('#remote-country select').val()
+        else if value == 'USD'
+          @include_us_rates = true
         else
           @remote_currency = value
         span_text = value
+        @convert()
     $("##{select_id} select").siblings('span').text( span_text)
   
   # set up event listeners
