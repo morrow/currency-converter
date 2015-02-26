@@ -84,16 +84,16 @@ Converter = (function() {
   Converter.prototype.getCommission = function(amount) {
     amount = this.parseNum(amount);
     this.commission_rate = 0.05;
-    if (amount > 1000) {
+    if (amount >= 1000) {
       this.commission_rate = 0.04;
     }
-    if (amount > 3000) {
+    if (amount >= 3000) {
       this.commission_rate = 0.03;
     }
-    if (amount > 4000) {
+    if (amount >= 4000) {
       this.commission_rate = 0.02;
     }
-    if (amount > 5000) {
+    if (amount >= 5000) {
       this.commission_rate = 0.02;
     }
     return amount * this.commission_rate;
@@ -157,11 +157,6 @@ Converter = (function() {
     $('.remote-currency-flag').attr('src', "./flags/png/" + this.remote_currency + ".png");
     $('.remote-currency-symbol').text(this.CURRENCY_DATA[this.remote_currency].symbol);
     $('.conversion-rate').text(this.format(1 / this.rates[this.remote_currency], this.remote_currency, 4));
-    if (this.include_us_rates) {
-      $('.us-rate').show();
-    } else {
-      $('.us-rate').hide();
-    }
     $('.us-rate').each((function(_this) {
       return function(i, ele) {
         var amount;
@@ -170,6 +165,12 @@ Converter = (function() {
         return $(ele).find('.amount').text(_this.format(amount / _this.rates['USD']), 'USD');
       };
     })(this));
+    if (this.include_us_rates) {
+      $('.us-rate').show();
+    } else {
+      $('.us-rate').hide();
+    }
+    $('dd.fees .us-rate').show();
     if ($('#input').val() === '') {
       $('#result').removeClass('expanded');
       return $('#info').hide();

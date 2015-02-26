@@ -26,44 +26,47 @@
         <dl>
           <dt>Amount to send:</dt>
           <dd>
-            <div class='us-rate'>
-              $<span class='amount'></span>
-              <img class='flag' src='./flags/png/USD.png' />
-              USD
-            </div>
             <span class='local-currency-symbol'></span>
             <span id='amount' class='amount'></span>
             <img class='local-currency-flag' />
             <span class='local-currency'></span>
+            <div class='us-rate'>
+              <span class='us-currency-symbol'>$</span>
+              <span class='amount'></span>
+              <img class='flag' src='./flags/png/USD.png' />
+              <span class='us-currency'>USD</span>
+            </div>
           </dd>
           </dd>
           <dt>Fees: </dt>
-          <dd>
-            <div class='us-rate'>
-              $<span class='amount'></span>
-              <img class='flag' src='./flags/png/USD.png' />
-              USD
-            </div>
+          <dd class='fees'>
             <span class='local-currency-symbol'></span>
             <span id='fees' class='amount'></span>
             <img class='local-currency-flag' />
             <span class='local-currency'></span>
+            <div class='us-rate'>
+              <span class='us-currency-symbol'>$</span>
+              <span class='amount'></span>
+              <img class='flag' src='./flags/png/USD.png' />
+              <span class='us-currency'>USD</span>
+            </div>
           </dd>
           <hr />
           <dt>Total due: </dt>
-          <dd>
+          <dd class='total'>
             <span class='local-currency-symbol'></span>
             <span id='total-due' class='amount'></span>
             <img class='local-currency-flag' />
             <span class='local-currency'></span>
             <div class='us-rate'>
-              $<span class='amount'></span>
+              <span class='us-currency-symbol'>$</span>
+              <span class='amount'></span>
               <img class='flag' src='./flags/png/USD.png' />
-              USD
+              <span class='us-currency'>USD</span>
             </div>
           </dd>
           <dt>Recipient receives: </dt>
-          <dd>
+          <dd class='receives'>
             <span class='remote-currency-symbol'></span>
             <span id='recipient-receives' class='amount'></span>
             <img class='remote-currency-flag' />

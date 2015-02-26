@@ -78,10 +78,10 @@ class Converter
   getCommission: ( amount )->
     amount = @parseNum( amount )
     @commission_rate = 0.05
-    @commission_rate = 0.04 if amount > 1000
-    @commission_rate = 0.03 if amount > 3000
-    @commission_rate = 0.02 if amount > 4000
-    @commission_rate = 0.02 if amount > 5000 # negotiable
+    @commission_rate = 0.04 if amount >= 1000
+    @commission_rate = 0.03 if amount >= 3000
+    @commission_rate = 0.02 if amount >= 4000
+    @commission_rate = 0.02 if amount >= 5000 # negotiable
     return amount * @commission_rate
 
   # convert
@@ -135,14 +135,16 @@ class Converter
     $('.remote-currency-symbol').text @CURRENCY_DATA[@remote_currency].symbol
     $('.conversion-rate').text( @format( 1 / @rates[@remote_currency], @remote_currency, 4) )
     # US rates
-    if @include_us_rates
-      $('.us-rate').show() 
-    else
-      $('.us-rate').hide() 
     $('.us-rate').each (i, ele) =>
       amount = @parseNum( $(ele).siblings('.amount').attr('data-amount') )
       currency = $(ele).siblings('.amount').data('currency')
       $(ele).find('.amount').text( @format( amount / @rates['USD'] ), 'USD' )
+    if @include_us_rates
+      $('.us-rate').show() 
+    else
+      $('.us-rate').hide() 
+    # always show US fee rate 
+    $('dd.fees .us-rate').show()
     if $('#input').val() == ''
       $('#result').removeClass( 'expanded' )
       $('#info').hide()
