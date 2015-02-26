@@ -125,7 +125,7 @@ option, input {
 }
 
 #remote-country {
-  display: block;
+  width:85px;
 }
 
 #remote-country-flag {
@@ -169,6 +169,10 @@ option, input {
   font-size: 15px;
 }
 
+#input {
+  width:115px;
+}
+
 .amount {
   font-weight: bold;
   color:black;
@@ -179,6 +183,16 @@ option, input {
   text-align: center;
   padding:1em 1em 0.5em 1em;
   font-size:12px;
+}
+
+#commission {
+  display: block;
+  text-align: center;
+  padding:0.5em 0.5em 1em 0.5em;
+}
+
+#commission.disabled {
+  opacity:0.8;
 }
 
 dl dt {

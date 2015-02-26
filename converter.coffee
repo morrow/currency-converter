@@ -46,6 +46,8 @@ class Converter
 
   # constructor
   constructor: ->
+    # include commission by default
+    @include_commission = $('#commission input').prop('checked')
     # get default remote currency
     @remote_currency = @CONFIGURATION.currencies_enabled_remote[0]
     # get default local currency
@@ -65,16 +67,12 @@ class Converter
         currency_data = @CURRENCY_DATA[currency]
         $('#remote-country select').append( "<option value='#{currency}'>#{currency_data.country}</option>" )
     # populate currency select
-    $('#send-receive-currency select').html('')
-    if $('#send-receive-toggle select').val() == 'send'
-      $('#send-receive-currency select').append( "<option value='#{@local_currency}'>#{@local_currency}</option>" )
-      $('#send-receive-currency select').append( "<option value='USD'>USD</option>" ) if @local_currency != 'USD'
-      #$('#send-receive-currency select').append( "<option value='#{@remote_currency}'>#{@remote_currency}</option>" )
-    else
-      $('#send-receive-currency select').append( "<option value='#{@remote_currency}'>#{@remote_currency}</option>" )
-      #$('#send-receive-currency select').append( "<option value='#{@local_currency}'>#{@local_currency}</option>" )
+    $('#currency select').html('')
+    $('#currency select').append( "<option value='#{@local_currency}'>#{@local_currency}</option>" )
+    $('#currency select').append( "<option value='USD'>USD</option>" ) if @local_currency != 'USD' and @remote_currency != 'USD'
+    $('#currency select').append( "<option value='#{@remote_currency}'>#{@remote_currency}</option>" )
     # trigger on change event for currency select
-    $('#send-receive-currency select').change()
+    $('#currency select').change()
 
   # return comission rate for given value
   getCommission: ( amount )->
@@ -88,25 +86,35 @@ class Converter
 
   # convert
   convert: ->
-    rate = @rates[@remote_currency]
-    if $('#send-receive-toggle select').val() == 'send'
-      if @include_us_rates
-        $('.us-rate').show()
-        remote_value = $('#send-receive-amount').val()
-        commission = @getCommission( remote_value ) 
-        remote_value -= commission
-        commission = commission * @rates['USD']
-        local_value = remote_value * @rates['USD']
-      else
-        $('.us-rate').hide()
-        local_value = @parseNum( $('#send-receive-amount').val() )
-        commission = @getCommission( local_value )
-        local_value -= commission
-        remote_value = local_value / rate
+    return false if $('#input').val() == ''
+    input = @parseNum( $('#input').val() )
+    currency = $('#currency select').val()
+    if currency == @remote_currency
+      $('#commission input').prop('checked', 'checked')
+      $('#commission, #commission input').attr('disabled', 'disabled')
+      $('#commission').addClass('disabled')
+      $('#commission').attr('title', 'Commission is always included for this transaction type')
+      @include_commission = true
     else
-      remote_value = @parseNum( $('#send-receive-amount').val() )
-      local_value = remote_value * rate
+      $('#commission').removeClass('disabled')
+      $('#commission, #commission input').removeAttr('disabled')
+      $('#commission').removeAttr('title')
+    if currency == 'AUD'
+      local_value = input
       commission = @getCommission( local_value )
+      local_value -= commission if @include_commission
+      remote_value = local_value / @rates[@remote_currency]
+    else if currency == @remote_currency
+      remote_value = input
+      commission = @getCommission( remote_value )
+      local_value  = remote_value * @rates[@remote_currency]
+      local_value += commission if @include_commission
+    else
+      local_value = input
+      local_value = input * @rates[currency]
+      commission = @getCommission( local_value )
+      local_value -= commission if @include_commission
+      remote_value = local_value / @rates[@remote_currency]
     # results 
     $('#amount').text( @format( local_value, @local_currency ) )
     $('#amount').attr( 'data-currency', @local_currency )
@@ -127,11 +135,15 @@ class Converter
     $('.remote-currency-symbol').text @CURRENCY_DATA[@remote_currency].symbol
     $('.conversion-rate').text( @format( 1 / @rates[@remote_currency], @remote_currency, 4) )
     # US rates
+    if @include_us_rates
+      $('.us-rate').show() 
+    else
+      $('.us-rate').hide() 
     $('.us-rate').each (i, ele) =>
       amount = @parseNum( $(ele).siblings('.amount').attr('data-amount') )
       currency = $(ele).siblings('.amount').data('currency')
       $(ele).find('.amount').text( @format( amount / @rates['USD'] ), 'USD' )
-    if $('#send-receive-amount').val() == ''
+    if $('#input').val() == ''
       $('#result').removeClass( 'expanded' )
       $('#info').hide()
     else 
@@ -141,20 +153,17 @@ class Converter
   # select handler
   selectHandler:(select_id, value)->
     switch select_id
-      when 'send-receive-toggle'
-        span_text = value[0].toUpperCase() + value.slice(1)
-        @populateSelectOptions()
       when 'remote-country'
         $('#remote-country-flag').attr('src', "./flags/png/#{value}.png")
         span_text = @CURRENCY_DATA[value]['country']
-        $('#send-receive-currency select').val(value)
-        @selectHandler('send-receive-currency', value)
+        $('#currency select').val(value)
+        @selectHandler('currency', value)
         @populateSelectOptions()
-      when 'send-receive-currency'
+      when 'currency'
         @include_us_rates = false
         if value == 'AUD'
           @remote_currency = $('#remote-country select').val()
-        else if value == 'USD' and $('#send-receive-toggle select').val() != 'receive'
+        else if value == 'USD' and $('#remote-country select').val() != 'USD'
           @include_us_rates = true
         else
           @remote_currency = value
@@ -166,11 +175,14 @@ class Converter
   listen: ->
     @listening = true
     # select change
+    $('#include-commission').on 'change', (e)=>
+      @include_commission = $(e.target).is(":checked")
+      @convert()
     $('.select select').on 'change', (e)=>
       @selectHandler($(e.target).parents('div').attr('id'), $(e.target).val())
       @convert()
     # input keyup
-    $('#send-receive-amount').on 'keyup', (e)=>
+    $('#input').on 'keyup', (e)=>
       if e.target.value == ''
         delay = 0
       else
@@ -193,7 +205,7 @@ class Converter
 
   # parse number from comma delimited string 
   parseNum: ( input )->
-    return '' if not input.toString().replace( /,|\./g, '' ).match( /[0-9]/ )
+    return '' if not input or not input.toString().replace( /,|\./g, '' ).match( /[0-9]/ )
     return parseFloat( parseFloat( input.toString().replace( /,/g, '' ) ).toFixed( @CONFIGURATION.significant_digits ) )
 
   # round number according to significant_digits

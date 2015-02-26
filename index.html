@@ -13,64 +13,61 @@
         <select></select>
         <span>&nbsp;</span>
       </div>
-      <div id='send-receive-toggle' class='select'>
-        <select>
-          <option value='send'>Send</option>
-          <option value='receive'>Receive</option>
-        </select>
-        <span>&nbsp;</span>
-      </div>
-      <div id='send-receive-currency' class='select'>
+      <div id='currency' class='select'>
         <select></select>
         <span>&nbsp;</span>
       </div>
-      <input id='send-receive-amount' class='input' type='text' placeholder='Amount' pattern='\d*' />
+      <input id='input' class='input' type='text' placeholder='Amount' pattern='\d*' />
+      <div id='commission'>
+        <label for='include-commission'>Include Commission</label>
+        <input id='include-commission' class='input' type='checkbox' />
+      </div>
       <div id='result'>
         <dl>
           <dt>Amount to send:</dt>
           <dd>
             <div class='us-rate'>
-              USD $
-              <span class='amount'></span>
+              $<span class='amount'></span>
               <img class='flag' src='./flags/png/USD.png' />
+              USD
             </div>
-            <span class='local-currency'></span>
             <span class='local-currency-symbol'></span>
             <span id='amount' class='amount'></span>
             <img class='local-currency-flag' />
+            <span class='local-currency'></span>
           </dd>
           </dd>
           <dt>Fees: </dt>
           <dd>
             <div class='us-rate'>
-              USD $
-              <span class='amount'></span>
+              $<span class='amount'></span>
               <img class='flag' src='./flags/png/USD.png' />
+              USD
             </div>
-            <span class='local-currency'></span>
             <span class='local-currency-symbol'></span>
             <span id='fees' class='amount'></span>
             <img class='local-currency-flag' />
+            <span class='local-currency'></span>
           </dd>
           <hr />
           <dt>Total due: </dt>
           <dd>
-            <span class='local-currency'></span>
             <span class='local-currency-symbol'></span>
             <span id='total-due' class='amount'></span>
             <img class='local-currency-flag' />
+            <span class='local-currency'></span>
             <div class='us-rate'>
-              USD $
-              <span class='amount'></span>
+              $<span class='amount'></span>
               <img class='flag' src='./flags/png/USD.png' />
+              USD
             </div>
           </dd>
           <dt>Recipient receives: </dt>
           <dd>
-            <span class='remote-currency'></span>
             <span class='remote-currency-symbol'></span>
             <span id='recipient-receives' class='amount'></span>
             <img class='remote-currency-flag' />
+            <span class='remote-currency'></span>
           </dd>
         </dl>
       </div>
