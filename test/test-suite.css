@@ -1,0 +1,65 @@
+@import url(../fonts/droid-sans-mono/stylesheet.css);
+
+iframe {
+  position: fixed;
+  top:0;
+  left:0;
+  width:450px;
+  border:none;
+}
+
+#wrap > *{
+  display: inline-block;
+  vertical-align: top;
+}
+
+#test-results-wrap {
+  position: absolute;
+  top: 1%;
+  right:0;
+  left:450px;
+  font-family:'droid sans mono', monospace;
+  font-size:12px;
+  padding:1em;
+  border: 2px solid #eee;
+  background: white;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table td, table th {
+  padding:3px;
+}
+
+table th {
+  font-size:11px;
+  font-weight: bold;
+  background:#ccc;
+  border:1px solid #333;
+}
+
+table td {
+  border-top:1px solid #ccc;
+  border-right:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  border-left:1px solid #ccc;
+  text-align: right;
+}
+
+table tr td:first-child, table tr td:nth-child(2), table tr td:nth-child(4), table tr td:last-child{
+  text-align: center;
+}
+
+table tr.pass {
+  color:rgb(0,200,0);
+}
+
+table tr.fail td {
+  background:rgb(255,0,0);
+}
+
+table tr td:nth-child(6),table tr td:nth-child(8),table tr td:nth-child(10),table tr td:nth-child(12) {
+  border-left:1px solid #09f !important;
+}

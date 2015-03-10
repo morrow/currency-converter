@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Currency Converter</title>
+    <meta charset='utf-8' />
+    <link rel='stylesheet' href='./test-suite.css' />
+  </head>
+  <body>
+    <div id='wrap'>
+      <iframe src='.././index.html' width='450' height='700'></iframe>
+      <div id='test-results-wrap'>
+        <button onclick='window.clearInterval(window.currency_interval)' style='float:right'>stop tests</button>
+        <h2> Test Results </h2>
+        <table id='test-results'>
+          <thead>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <script type='text/javascript' src='.././jquery.js'></script>
+    <script type='text/javascript' src='./test-suite.js'></script>
+    <script type='text/javascript'> window.onload = function(){ window.test_suite = new TestSuite('#converter') }</script>
+  </body>
+</html>

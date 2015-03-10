@@ -7,7 +7,7 @@
   </head>
   <body>
     <div id='converter'>
-      <img id='remote-country-flag' />
+      <img id='remote-country-flag' alt='country flag' src='./flags/png/USD.png' />
       <h2>Send to: </h2>
       <div id='remote-country' class='select'>
         <select></select>
@@ -17,7 +17,7 @@
         <select></select>
         <span>&nbsp;</span>
       </div>
-      <input id='input' class='input' type='text' placeholder='Amount' pattern='\d*' />
+      <input id='input' class='input' type='text' placeholder='Amount' pattern='\d*' autofocus />
       <div id='commission'>
         <label for='include-commission'>Include Commission</label>
         <input id='include-commission' class='input' type='checkbox' />
@@ -28,26 +28,25 @@
           <dd class='amount-to-send'>
             <span class='local-currency-symbol'></span>
             <span id='amount' class='amount'></span>
-            <img class='local-currency-flag' />
+            <img class='local-currency-flag' alt='country flag' />
             <span class='local-currency'></span>
             <div class='us-rate'>
               <span class='us-currency-symbol'>$</span>
               <span class='amount'></span>
-              <img class='flag' src='./flags/png/USD.png' />
+              <img class='flag' src='./flags/png/USD.png' alt='country flag'/>
               <span class='us-currency'>USD</span>
             </div>
-          </dd>
           </dd>
           <dt>Fees: </dt>
           <dd class='fees'>
             <span class='local-currency-symbol'></span>
             <span id='fees' class='amount'></span>
-            <img class='local-currency-flag' />
+            <img class='local-currency-flag' alt='country flag' />
             <span class='local-currency'></span>
             <div class='us-rate'>
               <span class='us-currency-symbol'>$</span>
               <span class='amount'></span>
-              <img class='flag' src='./flags/png/USD.png' />
+              <img class='flag' src='./flags/png/USD.png' alt='country flag' />
               <span class='us-currency'>USD</span>
             </div>
           </dd>
@@ -56,12 +55,12 @@
           <dd class='total'>
             <span class='local-currency-symbol'></span>
             <span id='total-due' class='amount'></span>
-            <img class='local-currency-flag' />
+            <img class='local-currency-flag' alt='country flag' />
             <span class='local-currency'></span>
             <div class='us-rate'>
               <span class='us-currency-symbol'>$</span>
               <span class='amount'></span>
-              <img class='flag' src='./flags/png/USD.png' />
+              <img class='flag' src='./flags/png/USD.png' alt='country flag' />
               <span class='us-currency'>USD</span>
             </div>
           </dd>
@@ -84,11 +83,11 @@
           <span class='remote-currency-symbol'></span>
           <span class='conversion-rate'></span>
         </div>
-        <div>Last updated: <span id='rates-updated-at'></span></div>
       </div>
     </div>
+    <script type='text/javascript' src='./jquery.js'></script>
+    <script type='text/javascript' src='./rates.js'></script>
+    <script type='text/javascript' src='./converter.js'></script>
+    <script type='text/javascript'>window.converter = new Converter('#converter')</script>
   </body>
-  <script type='text/javascript' src='./jquery.js'></script>
-  <script type='text/javascript' src='./converter.js'></script>
-  <script type='text/javascript'>window.converter = new Converter('#converter')</script>
 </html>

@@ -8,215 +8,211 @@
 
 /* Elements */
 body {
-  background: #fff;
+  background:   fff;
   font-family: 'pt sans', 'helvetica neue', helvetica, arial;
-  font-size:14px;
+  font-size: 14px;
 }
 
-figure, figcaption {
-  padding:0;
-  margin:0;
+#converter figure, figcaption {
+  padding: 0;
+  margin: 0;
 }
 
-h1 {
-  font-size:2.75em;
-  margin-top:0;
+#converter h1 {
+  font-size: 2.75em;
+  margin-top: 0;
 }
 
-h2 {
+#converter h2 {
   margin: 0;
   margin-bottom: 1em;
-  font-size:20px;
+  font-size: 20px;
   font-weight: bold;
 }
 
-a, a:visited {
+#converter a, #converter a:visited {
   color: inherit;
 }
 
-option, input {
+#converter option, #converter input {
   font-family: 'pt sans' !important;
 }
 
+/* Placeholder polyfill */
 ::-webkit-input-placeholder {
-   color: white;
+  color: white;
 }
 
 :-moz-placeholder {
-   color: white;  
+  color: white;
 }
 
-::-moz-placeholder { 
-   color: white;  
+::-moz-placeholder {
+  color: white;
 }
 
-:-ms-input-placeholder {  
-   color: white;  
+:-ms-input-placeholder {
+  color: white;
 }
 
+/* Converter */
 #converter {
-  padding:1em;
-  width:380px;
-  margin:4em auto;
-  background:#3498db;
+  padding: 1em;
+  width: 380px;
+  margin: 4em auto;
+  background: #3498db;
   color: white;
   box-shadow: 2px 2px 3px #ddd;
 }
 
-.select, .input, #result.expanded {
-  padding:0.75em;
+#converter .select, .input, #result.expanded {
+  padding: 0.75em;
   border-radius: 2px;
-  border:1px solid #1d6fa5;
-  min-height:1.25em;
+  border: 1px solid #1d6fa5;
+  min-height: 1.25em;
   font-size: 14px;
   display: inline-block;
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
   background: #217dbb;
-  color:white;
+  color: white;
 }
 
-.select {
+#converter .select {
   position: relative;
   padding-right: 3em;
-  margin:1em 0.2em;
+  margin: 1em 0.2em;
 }
 
-.select:after {
-/*  content:'';
-  width:0;
-  height:0;
-  border-left:6px solid transparent;
-  border-right:6px solid transparent;
-  border-top:9px solid #d0d1d3;
-*/
+#converter .select:after {
   background: #217dbb;
-  border-left:1px solid #1d6fa5;
+  border-left: 1px solid #1d6fa5;
   transform: scaleY(0.8);
   content: '▼';
-  color:white;
+  color: white;
   position: absolute;
-  top:0;
+  top: 0;
   right: 0;
-  bottom:0;
-  z-index:10;
-  font-size:15px;
-  width:2em;
+  bottom: 0;
+  z-index: 10;
+  font-size: 15px;
+  width: 2em;
   text-align: center;
-  padding-top:0.75em;
+  padding-top: 0.75em;
   margin: 0;
 }
 
-.select select {
-  z-index:100;
+#converter .select select {
+  z-index: 100;
   margin: 0;
-  width:100%;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background: transparent !important; /* do not change */
-  position:absolute;
-  font-size:14px;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent !important;
+  position: absolute;
+  font-size: 14px;
   opacity: 0;
 }
 
-.select select option {
+#converter .select select option {
   background: white !important;
 }
 
-#remote-country {
-  width:85px;
+#converter #remote-country {
+  width: 85px;
 }
 
-#remote-country-flag {
-  float:right;
-  padding:2px;
-  background:white;
-  width:35px;
+#converter #remote-country-flag {
+  float: right;
+  padding: 2px;
+  background: white;
+  width: 35px;
 }
 
-#send-receive-toggle {
-  min-width:50px;
+#converter #send-receive-toggle {
+  min-width: 50px;
 }
 
-#send-receive-amount {
-  max-width:145px;
+#converter #send-receive-amount {
+  max-width: 145px;
 }
 
-#result {
-  border-radius:5px;
-  max-height:0;
+#converter #result {
+  border-radius: 5px;
+  max-height: 0;
   overflow: hidden;
   color: #333;
-  padding: 0;
+  padding: 0 0.5em;
 }
 
-#result .local-currency-flag, #result .remote-currency-flag, .flag {
+#converter #result .local-currency-flag, #result .remote-currency-flag, .flag {
   position: relative;
-  top:4px;
-  width:25px;
+  top: 4px;
+  width: 25px;
 }
 
-#result hr {
-  border:1px solid #ddd;
+#converter #result hr {
+  border: 1px solid #ddd;
 }
 
-#result.expanded {
-  color:#333;
-  background:white;
-  max-height:1000px;
+#converter #result.expanded {
+  color: #333;
+  background: white;
+  max-height: 1000px;
   display: block;
   font-size: 15px;
 }
 
-#input {
-  width:115px;
+#converter #input {
+  width: 115px;
 }
 
-.amount {
-  color:black;
+#converter .amount {
+  color: black;
 }
 
-#result .local-currency-symbol, #result .remote-currency-symbol, #result .us-currency-symbol {
-  color:#555;
+#converter #result .local-currency-symbol, #result .remote-currency-symbol, #result .us-currency-symbol {
+  color: #555;
 }
 
-.total .amount, .receives .amount {
+#converter .total .amount, .receives .amount {
   font-weight: bold;
 }
 
-.total, .receives {
+#converter .total, .receives {
   font-weight: bold;
 }
 
-#info {
+#converter #info {
   display: none;
   text-align: center;
-  padding:1em 1em 0.5em 1em;
-  font-size:12px;
+  padding: 1em 1em 0.5em 1em;
+  font-size: 12px;
 }
 
-#commission {
+#converter #commission {
   display: block;
   text-align: center;
-  padding:0.5em 0.5em 1em 0.5em;
+  padding: 0.5em 0.5em 1em 0.5em;
 }
 
-#commission.disabled {
-  opacity:0.8;
+#converter #commission.disabled {
+  opacity: 0.8;
 }
 
-#result .remote-currency, #result .local-currency, #result .us-currency {
+#converter #result .remote-currency, #result .local-currency, #result .us-currency {
   text-align: center;
-  width:35px;
+  width: 35px;
   display: inline-block;
 }
 
-dl dt {
+#converter dl dt {
   float: left;
   padding: 0.5em 0;
 }
-dl dd {
+
+#converter dl dd {
   text-align: right;
   padding: 0.5em 0;
-  } 
+} 
