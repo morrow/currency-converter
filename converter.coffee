@@ -103,8 +103,6 @@ class Converter
 
   # convert
   convert: ->
-    # ensure input is not blank
-    return false if $('#converter #input').val() == ''
     # parse number from text input 
     input = @parseNum( $('#converter #input').val() )
     # get currency

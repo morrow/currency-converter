@@ -119,9 +119,6 @@ Converter = (function() {
 
   Converter.prototype.convert = function() {
     var commission, currency, input, local_value, remote_value;
-    if ($('#converter #input').val() === '') {
-      return false;
-    }
     input = this.parseNum($('#converter #input').val());
     currency = $('#converter #currency select').val();
     if (currency === this.remote_currency) {
