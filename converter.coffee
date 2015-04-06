@@ -107,7 +107,7 @@ class Converter
     input = @parseNum( $('#converter #input').val() )
     # get currency
     currency = $('#converter #currency select').val()
-    # converting to remote currency 
+    # converting *to* remote currency 
     if currency == @remote_currency
       # disable toggling of commission as commission is always included if input is in remote currency 
       # use-case: User wants to send X [remote currency], display how much [local currency] do they pay.
@@ -116,7 +116,7 @@ class Converter
       $('#converter #commission, #commission input').attr('disabled', 'disabled')
       $('#converter #commission').addClass('disabled')
       $('#converter #commission').attr('title', 'Commission is always included for this transaction type')
-    else
+    else 
       # allow toggling of commission if input is not in remote currency
       $('#converter #commission').removeClass('disabled')
       $('#converter #commission, #commission input').removeAttr('disabled')
@@ -192,6 +192,7 @@ class Converter
         $('#converter #currency select').val(value)
         # update currency select
         @selectHandler('currency', value)
+        # populate select options
         @populateSelectOptions()
       # currency select
       when 'currency'
