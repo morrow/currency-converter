@@ -4,7 +4,7 @@ var Converter,
 
 Converter = (function() {
   Converter.prototype.CONFIGURATION = {
-    conversion_keypress_delay: 500,
+    conversion_keypress_delay: 10,
     significant_digits: 2,
     continually_update_rates: false,
     currencies_enabled_remote: ['USD', 'ETB', 'EGP', 'SDG', 'KES'],
