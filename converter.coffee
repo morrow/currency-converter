@@ -2,7 +2,7 @@ class Converter
 
   CONFIGURATION:
     # time in milliseconds to wait after keypress before converting
-    conversion_keypress_delay: 500
+    conversion_keypress_delay: 10
     # number of digits used when displaying conversions 
     significant_digits: 2
     # update exchange rates for each transaction - note that the rate limit for YQL is 2,000 calls per hour
